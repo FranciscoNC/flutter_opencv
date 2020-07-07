@@ -7,6 +7,7 @@ import org.opencv.core.Core;
 import org.opencv.core.CvType;
 import org.opencv.core.Mat;
 import org.opencv.core.Point;
+import org.opencv.core.Rect;
 import org.opencv.core.Scalar;
 import org.opencv.core.Size;
 import org.opencv.core.MatOfByte;
@@ -640,6 +641,35 @@ public class CVCore {
             MatOfByte matOfByte = new MatOfByte();
             //Converting the Mat object to MatOfByte
             Imgcodecs.imencode(".jpg", input, matOfByte);
+            byteArray = matOfByte.toArray();
+//            System.out.println("OUT: " + dst);
+        } catch (Exception e) {
+            System.out.println("OpenCV Error: " + e.toString());
+        }
+        return byteArray;
+    }
+
+    public byte[] cropID(byte[] byteData){
+        byte[] byteArray = new byte[0];
+        try {
+            Mat resultTranspose = new Mat();
+            Mat resultFlip = new Mat();
+            // Decode image from input byte array
+            Mat img = Imgcodecs.imdecode(new MatOfByte(byteData), Imgcodecs.IMREAD_UNCHANGED);
+            Rect rect = new Rect(0,0,img.cols()/3,img.rows());
+            Mat input = new Mat(img,rect);
+
+            //Imgproc.medianBlur(input, input, 5);
+            // resize operation
+            Core.transpose(input,resultTranspose);
+            Core.flip(resultTranspose,resultFlip,1);
+
+
+
+            //instantiating an empty MatOfByte class
+            MatOfByte matOfByte = new MatOfByte();
+            //Converting the Mat object to MatOfByte
+            Imgcodecs.imencode(".jpg", resultFlip, matOfByte);
             byteArray = matOfByte.toArray();
 //            System.out.println("OUT: " + dst);
         } catch (Exception e) {

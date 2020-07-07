@@ -840,4 +840,9 @@ class ImgProc {
     /// Function returns the set String as result, use for debugging
     return result;
   }
+
+  static Future<dynamic> cropID({Uint8List byteData}) async{
+    final dynamic result = await _channel.invokeMethod('cropID',{'byteData': byteData});
+    return result;
+  }
 }
